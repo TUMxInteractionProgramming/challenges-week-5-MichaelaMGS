@@ -1,13 +1,16 @@
 /* start the external action and say hello */
 console.log("App is alive");
 
+// CHECK IF CHANNELS IS AN ARRAY hehe : console.log(Array.isArray(channels));
+
 
 /** #7 Create global variable */
 var currentChannel;
-
+var channels = [yummy, sevencontinents, killerapp, firstpersononmars, octoberfest];
+var emojis = require('emojis-list');
 /** #7 We simply initialize it with the channel selected by default - sevencontinents */
 currentChannel = sevencontinents;
-
+console.log();
 /** Store my current (sender) location
  */
 var currentLocation = {
@@ -73,13 +76,64 @@ function selectTab(tabId) {
     $('#tab-bar button').removeClass('selected');
     console.log('Changing to tab', tabId);
     $(tabId).addClass('selected');
+    
+    /* #10 sort first*/
+    switch (tabId) {
+        case "#tab-new":
+        channels.sort(function compareNew (a, b) {
+            return b.createdOn - a.createdOn;
+          })
+          reset();
+          listChannels();
+          break;
+
+        case "#tab-trending":
+        channels.sort(function compareTrending (c, d) {
+            return d.messageCount - c.messageCount;
+        })
+        reset();
+        listChannels();
+        break;  
+
+        case "#tab-favorites":
+        channels.sort(function compareFavorites (e, f) {
+            return f.starred - e.starred;
+          })
+        reset();
+        listChannels();
+        break;
+    }
+
+    
 }
+
+function reset() {
+    // Remove elements
+  $('#channels ul').empty();
+  }
+
+/* #10 function that compares if channel x is older than channel y is older than channel z ... */
+/*function compareTrending(a, b){ return a.createdBy-b.createdBy};
+function compareFavorites(a, b){ return a.createdBy-b.createdBy};*/
 
 /**
  * toggle (show/hide) the emojis menu
  */
 function toggleEmojis() {
+
+var eText = "";
+
+    for(var i=0;i<emojis.length;i++){
+        eText += emojis[i] + "";
+        //$('#emojis').innerHTML += emojis[i] + "";
+        //$('#emojis').html(emojis[i]).appendTo('#emojis'); 
+        //document.getElementById('channel-name').innerHTML = channelObject.name;
+    }
+
+    document.getElementById('emojis').innerHTML = eText;
     $('#emojis').toggle(); // #toggle
+
+    
 }
 
 /**
@@ -108,16 +162,20 @@ function sendMessage() {
     // #8 let's now use the real message #input
     var message = new Message($('#message').val());
     console.log("New message:", message);
+    console.log($('#message').val().length);
+    if ($('#message').val().length == 0){
+        alert("Say something before you send a message.")
+    } else {
+        // #8 convenient message append with jQuery:
+        $('#messages').append(createMessageElement(message));
 
-    // #8 convenient message append with jQuery:
-    $('#messages').append(createMessageElement(message));
+        // #8 messages will scroll to a certain point if we apply a certain height, in this case the overall scrollHeight of the messages-div that increases with every message;
+        // it would also scroll to the bottom when using a very high number (e.g. 1000000000);
+        $('#messages').scrollTop($('#messages').prop('scrollHeight'));
 
-    // #8 messages will scroll to a certain point if we apply a certain height, in this case the overall scrollHeight of the messages-div that increases with every message;
-    // it would also scroll to the bottom when using a very high number (e.g. 1000000000);
-    $('#messages').scrollTop($('#messages').prop('scrollHeight'));
-
-    // #8 clear the message input
-    $('#message').val('');
+        // #8 clear the message input
+        $('#message').val('');
+    }   
 }
 
 /**
@@ -144,18 +202,25 @@ function createMessageElement(messageObject) {
         '</div>';
 }
 
-
 function listChannels() {
     // #8 channel onload
     //$('#channels ul').append("<li>New Channel</li>")
 
     // #8 five new channels
-    $('#channels ul').append(createChannelElement(yummy));
+    /*$('#channels ul').append(createChannelElement(yummy));
     $('#channels ul').append(createChannelElement(sevencontinents));
     $('#channels ul').append(createChannelElement(killerapp));
     $('#channels ul').append(createChannelElement(firstpersononmars));
-    $('#channels ul').append(createChannelElement(octoberfest));
+    $('#channels ul').append(createChannelElement(octoberfest));*/
+
+    // #10 list channels via for loop
+    for (var i = 0; i < channels.length;i++){
+        //console.log(channels[i]);
+
+        $('#channels ul').append(createChannelElement(channels[i]));
+    }
 }
+
 
 /**
  * #8 This function makes a new jQuery #channel <li> element out of a given object

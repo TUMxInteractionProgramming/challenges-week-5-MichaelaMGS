@@ -1,3 +1,7 @@
+/** #10 Create global variable */
+
+
+
 /** #7 #chlob #new: the new yummy channel */
 
 var yummy = {

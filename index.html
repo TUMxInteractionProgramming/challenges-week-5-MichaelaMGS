@@ -13,7 +13,10 @@
     <!-- embed jquery -->
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"
 			integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
-			crossorigin="anonymous"></script>
+            crossorigin="anonymous"></script>
+            
+     <script src="js/emojis-list.js" type="text/javascript" charset="utf-8"></script>
+     
 
     <!-- #7 embed font awesome -->
     <!-- <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" /> -->
@@ -28,7 +31,7 @@
 </head>
 
 <!-- #8 #channel #onload all channels when the body has loaded -->
-<body onload="listChannels()">
+<body onload="selectTab('#tab-new')">
 
 <!-- channel area -->
 <div id="channels" class="md-whiteframe-16dp">
